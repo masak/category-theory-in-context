@@ -7,8 +7,8 @@ universe u v
 
 variable {C : Type u} [Category.{v} C]
 
-/-- A morphism has at most one two-sided inverse.
-    If g and h are both left and right inverses of f, then g = h. -/
+/-- Exercise 1.1.i
+    (i) Show that a morphism can have at most one inverse isomorphism. --/
 theorem iso_inv_unique {X Y : C} {f : X → Y} {g h : Y → X}
     (fg : f ≫ g = 𝟙 X) (hf : h ≫ f = 𝟙 Y) :
     g = h := by
@@ -19,8 +19,9 @@ theorem iso_inv_unique {X Y : C} {f : X → Y} {g h : Y → X}
     _ = h ≫ 𝟙 X       := by rw [fg]
     _ = h
 
-/-- If f has a left inverse g and a right inverse h,
-    then f is an isomorphism. -/
+/-- (ii) Consider a morphism f : x ⟶ y. Show that if there exists a
+    pair of morphisms g, h: y ⟶ x so that g f = 1_x and f h = 1_y,
+    then g = h and f is an isomorphism. -/
 theorem section_retraction_isIso {X Y : C} {f : X ⟶ Y} {g h : Y ⟶ X}
     (fg : f ≫ g = 𝟙 X) (hf : h ≫ f = 𝟙 Y) :
     IsIso f := by
