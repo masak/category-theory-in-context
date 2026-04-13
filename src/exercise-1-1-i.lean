@@ -3,7 +3,7 @@ import Mathlib.CategoryTheory.Iso
 
 open CategoryTheory
 
-universe u v
+universe v u
 
 variable {C : Type u} [Category.{v} C]
 
