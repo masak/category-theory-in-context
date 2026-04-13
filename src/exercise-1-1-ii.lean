@@ -5,7 +5,7 @@ open CategoryTheory
 
 universe v₁ u₁
 
-variable {C : Type u} [Category.{v} C]
+variable {C : Type u₁} [Category.{v₁} C]
 
 /-- Exercise 1.1.ii. Let C be a category. Show that the collection of
     isomorphisms in C defines a subcategory, the **maximal groupoid**
