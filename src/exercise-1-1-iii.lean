@@ -3,9 +3,9 @@ import Mathlib.CategoryTheory.Core
 
 open CategoryTheory
 
-universe v₁ u₁
+universe v u
 
-variable {T : Type u₁} [Category.{v₁} T]
+variable {C : Type u} [Category.{v} C] (c : C)
 
 /-- Exercise 1.1.iii. For any category C and any object c ∈ C,
     show that:
@@ -50,8 +50,13 @@ variable {T : Type u₁} [Category.{v₁} T]
 ```
 def Under (X : T) :=
   StructuredArrow X (𝟭 T)
+```
+    -/
+#check Under c
 
+/--
 def Over (X : T) :=
   CostructuredArrow (𝟭 T) X
 ```
     -/
+#check Over c
