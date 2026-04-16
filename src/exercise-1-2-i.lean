@@ -1,0 +1,15 @@
+import Mathlib.CategoryTheory.Comma.Over
+import Mathlib.CategoryTheory.Comma.Basic
+
+open CategoryTheory
+
+universe v u
+
+variable {C : Type u} [Category.{v} C] (c : C)
+
+/-- Exercise 1.2.i. Show that C/c ≅ (c/(Cᵒᵖ))ᵒᵖ. Defining C/c to be
+    (c/(Cᵒᵖ))ᵒᵖ, deduce Exercise 1.1.iii(ii) from Exercise 1.1.iii(i).
+    -/
+
+def OverUnderOpEquiv : Over c ≌ (Under (op C))ᵒᵖ :=
+  Comma.opEquiv (𝟙 C) (Functor.fromPUnit c)
