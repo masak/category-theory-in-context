@@ -9,7 +9,7 @@ variable {C : Type u} [Category.{v} C]
 
 /-- Exercise 1.1.i
     (i) Show that a morphism can have at most one inverse isomorphism. --/
-theorem iso_inv_unique {X Y : C} {f : X → Y} {g h : Y → X}
+theorem iso_inv_unique {X Y : C} {f : X ⟶ Y} {g h : Y ⟶ X}
     (fg : f ≫ g = 𝟙 X) (hf : h ≫ f = 𝟙 Y) :
     g = h := by
   calc
