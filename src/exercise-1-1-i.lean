@@ -17,7 +17,7 @@ theorem iso_inv_unique {X Y : C} {f : X → Y} {g h : Y → X}
     _ = (h ≫ f) ≫ g   := by rw [hf]
     _ = h ≫ (f ≫ g)   := by simp
     _ = h ≫ 𝟙 X       := by rw [fg]
-    _ = h
+    _ = h              := by simp
 
 /-- (ii) Consider a morphism f : x ⟶ y. Show that if there exists a
     pair of morphisms g, h: y ⟶ x so that g f = 1_x and f h = 1_y,
