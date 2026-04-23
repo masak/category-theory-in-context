@@ -1,4 +1,4 @@
-import Mathlib.CategoryTheory.Comma.Over
+import Mathlib.CategoryTheory.Comma.Over.Basic
 -- import Mathlib.CategoryTheory.Comma.Basic
 import Mathlib.CategoryTheory.Opposites
 
