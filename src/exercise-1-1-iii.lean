@@ -1,4 +1,4 @@
-import Mathlib.CategoryTheory.Comma.Over
+import Mathlib.CategoryTheory.Comma.Over.Basic
 import Mathlib.CategoryTheory.Core
 
 open CategoryTheory
