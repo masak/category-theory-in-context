@@ -69,7 +69,7 @@ theorem isSplitEpi_iff_surjective_postcomp :
     -- This means s ≫ f = 𝟙 Y
     dsimp [postcomp] at hs
     -- Construct the SplitEpi structure from s
-    exact IsSplitEpi.mk' ⟨s, hs.symm⟩
+    exact IsSplitEpi.mk' ⟨s, hs⟩
 
 end SplitEpiCharacterization
 
