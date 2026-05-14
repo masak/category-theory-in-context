@@ -1,3 +1,4 @@
+
 import Mathlib.CategoryTheory.EpiMono
 import Mathlib.CategoryTheory.Opposites
 
@@ -110,8 +111,32 @@ theorem isSplitMono_iff_surjective_precomp :
   -- Step 1: f is split mono in C iff f.op is split epi in Cᵒᵖ
   have h1 : IsSplitMono f ↔ IsSplitEpi f.op := by
     constructor
-    · intro; infer_instance  -- mathlib provides this instance
-    · intro; infer_instance  -- mathlib provides this instance
+    · -- Forward: IsSplitMono f → IsSplitEpi f.op
+      -- mathlib provides this instance automatically
+      intro hf
+      infer_instance
+    · -- Backward: IsSplitEpi f.op → IsSplitMono f
+      -- mathlib does NOT provide this as a direct instance (would need Cᵒᵖᵒᵖ equivalence)
+      -- So we construct it manually by unpacking the SplitEpi structure
+      intro hf
+      -- Extract the SplitEpi structure for f.op in Cᵒᵖ
+      have hse : SplitEpi f.op := hf.exists_splitEpi.some
+      -- The section of f.op is a morphism s : Opposite.op X ⟶ Opposite.op Y in Cᵒᵖ
+      -- Taking unop gives s.unop : Y ⟶ X in C, which will be our retraction
+      let r := hse.section_.unop
+      -- We need to show f ≫ r = 𝟙 X
+      have hr : f ≫ r = 𝟙 X := by
+        -- The SplitEpi identity: s ≫ f.op = 𝟙 (Opposite.op X) in Cᵒᵖ
+        have h_id : hse.section_ ≫ f.op = 𝟙 (Opposite.op X) := hse.id
+        -- Take unop of both sides
+        have h_unop : Quiver.Hom.unop (hse.section_ ≫ f.op) = Quiver.Hom.unop (𝟙 (Opposite.op X)) := by
+          rw [h_id]
+        -- Simplify using: (g ≫ h).unop = h.unop ≫ g.unop and (𝟙 _).unop = 𝟙
+        simp at h_unop
+        -- After simplification: f ≫ r = 𝟙 X
+        exact h_unop
+      -- Construct the IsSplitMono instance from the SplitMono structure
+      exact ⟨Nonempty.intro ⟨r, hr⟩⟩
   rw [h1]
 
   -- Step 2: Apply part (i) to f.op in the opposite category
