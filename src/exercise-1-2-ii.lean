@@ -1,4 +1,3 @@
-
 import Mathlib.CategoryTheory.EpiMono
 import Mathlib.CategoryTheory.Opposites
 
@@ -126,16 +125,16 @@ theorem isSplitMono_iff_surjective_precomp :
       let r := hse.section_.unop
       -- We need to show f ≫ r = 𝟙 X
       have hr : f ≫ r = 𝟙 X := by
-        -- The SplitEpi identity: s ≫ f.op = 𝟙 (Opposite.op X) in Cᵒᵖ
         have h_id : hse.section_ ≫ f.op = 𝟙 (Opposite.op X) := hse.id
-        -- Take unop of both sides
-        have h_unop : Quiver.Hom.unop (hse.section_ ≫ f.op) = Quiver.Hom.unop (𝟙 (Opposite.op X)) := by
-          rw [h_id]
-        -- Simplify using: (g ≫ h).unop = h.unop ≫ g.unop and (𝟙 _).unop = 𝟙
-        simp at h_unop
-        -- After simplification: f ≫ r = 𝟙 X
-        exact h_unop
-      -- Construct the IsSplitMono instance from the SplitMono structure
+        have h_unop_comp : (hse.section_ ≫ f.op).unop = (f.op).unop ≫ hse.section_.unop := by
+          simp [CategoryTheory.unop_comp]
+        have h_unop_op : (f.op).unop = f := by
+          simp [Quiver.Hom.unop_op]
+        calc
+          f ≫ r = (f.op).unop ≫ hse.section_.unop := by rw [show r = hse.section_.unop by rfl, h_unop_op]
+          _ = (hse.section_ ≫ f.op).unop           := by rw [h_unop_comp]
+          _ = (𝟙 (Opposite.op X)).unop              := by rw [h_id]
+          _ = 𝟙 X                                   := by simp [CategoryTheory.unop_id]
       exact ⟨Nonempty.intro ⟨r, hr⟩⟩
   rw [h1]
 
