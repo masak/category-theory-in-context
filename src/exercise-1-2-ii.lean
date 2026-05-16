@@ -30,7 +30,19 @@ def precomp (c : C) : (Y ⟶ c) → (X ⟶ c) :=
 
 theorem isSplitEpi_iff_surjective_postcomp :
     IsSplitEpi f ↔ ∀ (c : C), Function.Surjective (postcomp f c) := by
-  sorry
+  constructor
+  · -- (→) Assume f is a split epi; prove post-composition is surjective.
+    intro hf c g
+    use g ≫ section_ f
+    dsimp [postcomp]
+    rw [Category.assoc, IsSplitEpi.id f, Category.comp_id]
+    rfl
+  · -- (←) Assume post-composition is surjective for all c; prove f is a split epi.
+    intro hsurj
+    have hY := hsurj Y
+    obtain ⟨s, hs⟩ := hY (𝟙 Y)
+    dsimp [postcomp] at hs
+    exact IsSplitEpi.mk' ⟨s, hs⟩
 
 end SplitEpiCharacterization
 
@@ -38,6 +50,44 @@ section SplitMonoCharacterization
 
 theorem isSplitMono_iff_surjective_precomp :
     IsSplitMono f ↔ ∀ (c : C), Function.Surjective (precomp f c) := by
-  sorry
+  -- Step 1: f is split mono in C iff f.op is split epi in Cᵒᵖ
+  have h1 : IsSplitMono f ↔ IsSplitEpi f.op := by
+    constructor
+    · -- Forward: IsSplitMono f → IsSplitEpi f.op
+      intro hf
+      have hsm : SplitMono f := hf.exists_splitMono.some
+      refine IsSplitEpi.mk' ⟨hsm.retraction.op, ?_⟩
+      rw [← CategoryTheory.op_comp, hsm.id, CategoryTheory.op_id]
+      rfl
+    · -- Backward: IsSplitEpi f.op → IsSplitMono f
+      intro hf
+      have hse : SplitEpi f.op := hf.exists_splitEpi.some
+      refine IsSplitMono.mk' ⟨hse.section_.unop, ?_⟩
+      rw [← CategoryTheory.unop_comp, hse.id, CategoryTheory.unop_id]
+      rfl
+  rw [h1]
+
+  -- Step 2: Apply part (i) to f.op in the opposite category
+  have h2 := isSplitEpi_iff_surjective_postcomp (C := Cᵒᵖ) f.op
+  rw [h2]
+
+  -- Step 3: Show the two surjectivity conditions are equivalent
+  constructor
+  · -- Forward: ∀ c in Cᵒᵖ, postcomp surjective → ∀ c in C, precomp surjective
+    intro h c g
+    have h_surj := h (Opposite.op c) (Quiver.Hom.op g)
+    obtain ⟨k', hk'⟩ := h_surj
+    use Quiver.Hom.unop k'
+    dsimp [precomp]
+    rw [← CategoryTheory.unop_comp, hk', Quiver.Hom.unop_op]
+    rfl
+  · -- Backward: ∀ c in C, precomp surjective → ∀ c in Cᵒᵖ, postcomp surjective
+    intro h c g
+    have h_surj := h (unop c) (Quiver.Hom.unop g)
+    obtain ⟨k', hk'⟩ := h_surj
+    use Quiver.Hom.op k'
+    dsimp [postcomp]
+    rw [← CategoryTheory.op_comp, hk', Quiver.Hom.op_unop]
+    rfl
 
 end SplitMonoCharacterization
