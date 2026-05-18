@@ -2,7 +2,7 @@ import Mathlib.CategoryTheory.EpiMono
 import Mathlib.CategoryTheory.Opposites
 
 /-!
-# Exercise 1.2.ii from Riehl's "Category Theory in Context"
+Exercise 1.2.ii:
 
 (i) Show that a morphism f: x → y is a split epimorphism in a category C
     if and only if for all c ∈ C, post-composition f_* : C(c, x) → C(c, y)
@@ -52,12 +52,12 @@ theorem isSplitMono_iff_surjective_precomp :
   -- Step 1: f is split mono in C iff f.op is split epi in Cᵒᵖ
   have h1 : IsSplitMono f ↔ IsSplitEpi f.op := by
     constructor
-    · -- Forward: IsSplitMono f → IsSplitEpi f.op
+    · -- (→) IsSplitMono f → IsSplitEpi f.op
       intro hf
       have hsm : SplitMono f := hf.exists_splitMono.some
       refine IsSplitEpi.mk' ⟨hsm.retraction.op, ?_⟩
       rw [← CategoryTheory.op_comp, hsm.id, CategoryTheory.op_id]
-    · -- Backward: IsSplitEpi f.op → IsSplitMono f
+    · -- (←) IsSplitEpi f.op → IsSplitMono f
       intro hf
       have hse : SplitEpi f.op := hf.exists_splitEpi.some
       refine IsSplitMono.mk' ⟨hse.section_.unop, ?_⟩
@@ -70,14 +70,14 @@ theorem isSplitMono_iff_surjective_precomp :
 
   -- Step 3: Show the two surjectivity conditions are equivalent
   constructor
-  · -- Forward: ∀ c in Cᵒᵖ, postcomp surjective → ∀ c in C, precomp surjective
+  · -- (→) ∀ c in Cᵒᵖ, postcomp surjective → ∀ c in C, precomp surjective
     intro h c g
     have h_surj := h (Opposite.op c) (Quiver.Hom.op g)
     obtain ⟨k', hk'⟩ := h_surj
     use Quiver.Hom.unop k'
     dsimp [precomp]
     rw [← CategoryTheory.unop_comp, hk', Quiver.Hom.unop_op]
-  · -- Backward: ∀ c in C, precomp surjective → ∀ c in Cᵒᵖ, postcomp surjective
+  · -- (←) ∀ c in C, precomp surjective → ∀ c in Cᵒᵖ, postcomp surjective
     intro h c g
     have h_surj := h (unop c) (Quiver.Hom.unop g)
     obtain ⟨k', hk'⟩ := h_surj
