@@ -36,7 +36,6 @@ theorem isSplitEpi_iff_surjective_postcomp :
     use g ≫ section_ f
     dsimp [postcomp]
     rw [Category.assoc, IsSplitEpi.id f, Category.comp_id]
-    rfl
   · -- (←) Assume post-composition is surjective for all c; prove f is a split epi.
     intro hsurj
     have hY := hsurj Y
@@ -58,13 +57,11 @@ theorem isSplitMono_iff_surjective_precomp :
       have hsm : SplitMono f := hf.exists_splitMono.some
       refine IsSplitEpi.mk' ⟨hsm.retraction.op, ?_⟩
       rw [← CategoryTheory.op_comp, hsm.id, CategoryTheory.op_id]
-      rfl
     · -- Backward: IsSplitEpi f.op → IsSplitMono f
       intro hf
       have hse : SplitEpi f.op := hf.exists_splitEpi.some
       refine IsSplitMono.mk' ⟨hse.section_.unop, ?_⟩
       rw [← CategoryTheory.unop_comp, hse.id, CategoryTheory.unop_id]
-      rfl
   rw [h1]
 
   -- Step 2: Apply part (i) to f.op in the opposite category
@@ -80,7 +77,6 @@ theorem isSplitMono_iff_surjective_precomp :
     use Quiver.Hom.unop k'
     dsimp [precomp]
     rw [← CategoryTheory.unop_comp, hk', Quiver.Hom.unop_op]
-    rfl
   · -- Backward: ∀ c in C, precomp surjective → ∀ c in Cᵒᵖ, postcomp surjective
     intro h c g
     have h_surj := h (unop c) (Quiver.Hom.unop g)
@@ -88,6 +84,5 @@ theorem isSplitMono_iff_surjective_precomp :
     use Quiver.Hom.op k'
     dsimp [postcomp]
     rw [← CategoryTheory.op_comp, hk', Quiver.Hom.op_unop]
-    rfl
 
 end SplitMonoCharacterization
